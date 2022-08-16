@@ -1,0 +1,14 @@
+on: [push, pull_request]
+
+name: security
+
+jobs:
+  gosec:
+    runs-on: ubuntu-latest
+    steps:
+      - name: fetch repository
+        uses: actions/checkout@v3
+      - name: run gosec
+        uses: securego/gosec@master
+        with:
+          args: ./...

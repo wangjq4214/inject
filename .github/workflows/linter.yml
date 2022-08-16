@@ -1,0 +1,14 @@
+on: [push, pull_request]
+
+name: linter
+
+jobs:
+  golint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: fetch repository
+        uses: actions/checkout@v3
+      - name: run golint
+        uses: reviewdog/action-golangci-lint@v2
+        with:
+          golangci_lint_flags: "--tests=false"

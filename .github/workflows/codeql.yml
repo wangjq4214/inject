@@ -1,0 +1,36 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 3 * * 6"
+
+name: codeql
+
+jobs:
+  analyse:
+    name: analyse
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+
+      - run: git checkout HEAD^2
+        if: ${{ github.event_name == 'pull_request' }}
+
+      - name: initialize codeql
+        uses: github/codeql-action/init@v2
+        with:
+          languages: go
+
+      - name: autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: perform codeql analysis
+        uses: github/codeql-action/analyze@v2
